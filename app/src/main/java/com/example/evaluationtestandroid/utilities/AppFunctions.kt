@@ -1,7 +1,9 @@
 package com.example.evaluationtestandroid.utilities
 
+import android.widget.ImageView
 import androidx.fragment.app.Fragment
 import com.example.evaluationtestandroid.R
+import com.squareup.picasso.Picasso
 
 fun replaceFragment(fragment: Fragment, addToBackStack: Boolean = true) {
     if (addToBackStack) {
@@ -15,4 +17,9 @@ fun replaceFragment(fragment: Fragment, addToBackStack: Boolean = true) {
         APP_ACTIVITY.supportFragmentManager.beginTransaction()
             .replace(R.id.data_container, fragment).commit()
     }
+}
+
+fun ImageView.downloadAndSetImage(url: String) {
+    Picasso.get().load(url).fit()
+        .placeholder(R.drawable.ic_base_image).into(this)
 }

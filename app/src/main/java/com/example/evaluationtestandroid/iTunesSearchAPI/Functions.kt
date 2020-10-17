@@ -17,7 +17,7 @@ fun getAlbums(searchRequest: String, adapter: MainAdapter, count: Int) {
     val url =
         "https://itunes.apple.com/search?term=${
             searchRequest.toLowerCase(Locale.ENGLISH).replace(' ', '+')
-        }&entity=audiobook&limit=$count"
+        }&media=music&entity=album&attribute=ratingIndex&limit=$count"
     val okHttpClient = OkHttpClient()
     val request = Request.Builder().url(url).build()
     okHttpClient.newCall(request).enqueue(object : Callback {
@@ -33,7 +33,8 @@ fun getAlbums(searchRequest: String, adapter: MainAdapter, count: Int) {
                     AlbumModel(
                         obj.getString("collectionName"),
                         obj.getString("artistName"),
-                        obj.getString("primaryGenreName")
+                        obj.getString("primaryGenreName"),
+                        obj.getString("artworkUrl100")
                     )
                 )
             }
