@@ -1,6 +1,7 @@
 package com.example.evaluationtestandroid.utilities
 
 import android.widget.ImageView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.evaluationtestandroid.R
 import com.squareup.picasso.Picasso
@@ -22,4 +23,8 @@ fun replaceFragment(fragment: Fragment, addToBackStack: Boolean = true) {
 fun ImageView.downloadAndSetImage(url: String) {
     Picasso.get().load(url).fit()
         .placeholder(R.drawable.ic_base_image).into(this)
+}
+
+fun showToast(message: String) {
+    Toast.makeText(APP_ACTIVITY, message, Toast.LENGTH_SHORT).show()
 }

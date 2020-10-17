@@ -1,7 +1,5 @@
 package com.example.evaluationtestandroid.screens.MainScreen
 
-import android.text.TextWatcher
-import android.util.Log
 import android.view.View
 import android.widget.AbsListView
 import android.widget.EditText
@@ -21,25 +19,35 @@ import kotlinx.android.synthetic.main.toolbar_search.view.*
 class MainFragment : Fragment(R.layout.fragment_main) {
 
     private lateinit var mRecyclerView: RecyclerView
-    private val dataList = mutableListOf<AlbumModel>()
     private lateinit var mLayoutManager: LinearLayoutManager
     private lateinit var mAdapter: MainAdapter
 
     var isScrolling: Boolean = false
-
-    private var count: Int = 0
 
     private var search: String = ""
 
     private lateinit var mSearchEditText: EditText
     private lateinit var mSearchEraseButton: ImageView
 
-    override fun onResume() {
-        super.onResume()
+    private var dataList = mutableListOf<AlbumModel>()
+    private var count: Int = 0
+
+    companion object {
+        var mRecyclerViewPosition: Int = 0
+    }
+
+    override fun onStart() {
+        super.onStart()
         initFields()
         initFunctions()
         initRecyclerView()
-        updateData()
+        updateData(true)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        APP_ACTIVITY.mToolbar.search_toolbar.visibility = View.VISIBLE
+        APP_ACTIVITY.supportActionBar?.setDisplayHomeAsUpEnabled(false)
     }
 
     private fun initFunctions() {
@@ -90,9 +98,15 @@ class MainFragment : Fragment(R.layout.fragment_main) {
         })
     }
 
-    fun updateData() {
+    fun updateData(toPosition: Boolean = false) {
         isScrolling = false
         count += 20
-        getAlbums(search, mAdapter, count)
+        getAlbums(search, count) {
+            dataList = it
+            mAdapter.changeData(it)
+            if (toPosition) {
+                mRecyclerView.smoothScrollToPosition(mRecyclerViewPosition + 2)
+            }
+        }
     }
 }

@@ -14,15 +14,10 @@ class MainAdapter(private var dataList: MutableList<AlbumModel>) : RecyclerView.
     }
 
     override fun onBindViewHolder(holder: AlbumItemHolder, position: Int) {
-        holder.draw(dataList[position])
+        holder.draw(dataList[position], position)
     }
 
     override fun getItemCount(): Int = dataList.size
-
-    fun addAlbum(albumModel: AlbumModel) {
-        dataList.add(albumModel)
-        notifyItemInserted(0)
-    }
 
     fun changeData(newList: MutableList<AlbumModel>) {
         dataList = newList

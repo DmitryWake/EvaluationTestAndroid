@@ -1,10 +1,10 @@
 package com.example.evaluationtestandroid.models
 
-data class AlbumModel (
-    val id: Int,
+data class SongModel (
     val name: String = "",
     val author: String = "",
-    val description: String = "",
+    val album: String = "",
+    val timeInMillis: String = "",
     val imageUrl: String = "empty",
-    val songsCount: Int
+    val trackNumber: Int
 )
