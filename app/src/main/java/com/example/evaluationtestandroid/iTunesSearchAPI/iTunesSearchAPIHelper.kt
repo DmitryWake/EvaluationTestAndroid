@@ -2,6 +2,7 @@ package com.example.evaluationtestandroid.iTunesSearchAPI
 
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import com.example.evaluationtestandroid.models.AlbumModel
 import com.example.evaluationtestandroid.models.SongModel
 import okhttp3.*
@@ -35,6 +36,8 @@ fun getAlbums(
     val request = Request.Builder().url(url).build()
     okHttpClient.newCall(request).enqueue(object : Callback {
         override fun onFailure(call: Call, e: IOException) {
+            Log.e("getAlbums", e.message.toString())
+            return
         }
 
         override fun onResponse(call: Call, response: Response) {

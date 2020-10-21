@@ -53,7 +53,7 @@ class MainFragment : Fragment(R.layout.fragment_main) {
     private fun initFunctions() {
         mSearchEditText.addTextChangedListener(
             AppTextWatcher {
-                search = it.toString()
+                search = mSearchEditText.text.toString()
                 if (search.isNotEmpty()) {
                     mSearchEraseButton.visibility = View.VISIBLE
                     count = 0

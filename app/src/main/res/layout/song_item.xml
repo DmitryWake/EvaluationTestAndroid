@@ -43,6 +43,7 @@
         android:textSize="@dimen/song_text_size"
         app:layout_constraintStart_toEndOf="@id/song_author"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/song_name"
         app:layout_constraintBottom_toBottomOf="parent"/>
 
     <TextView

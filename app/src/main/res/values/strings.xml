@@ -1,6 +1,10 @@
 <resources>
     <string name="app_name">Evaluation Test Android</string>
-    <string name="enter_the_album_name">Enter the album name</string>
-    <!-- TODO: Remove or change this placeholder text -->
+    <string name="enter_the_album_name">Search album</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="album_name">Album name</string>
+    <string name="album_author">Album author</string>
+    <string name="album_description">Album description</string>
+    <string name="songs">Songs</string>
+    <string name="top_albums">Top albums</string>
 </resources>
