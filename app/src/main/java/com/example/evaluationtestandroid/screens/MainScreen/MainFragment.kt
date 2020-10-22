@@ -35,12 +35,15 @@ class MainFragment : Fragment(R.layout.fragment_main) {
 
     override fun onStart() {
         super.onStart()
+
         initFields()
         initFunctions()
         initRecyclerView()
-        mRecyclerView.scrollToPosition(mRecyclerViewPosition)
+
         if (dataList.isEmpty())
             updateData()
+
+        mRecyclerView.scrollToPosition(mRecyclerViewPosition)
     }
 
     override fun onResume() {
@@ -51,7 +54,8 @@ class MainFragment : Fragment(R.layout.fragment_main) {
 
     override fun onPause() {
         super.onPause()
-        mRecyclerViewPosition =  mLayoutManager.findFirstVisibleItemPosition()
+        // Safe current position
+        mRecyclerViewPosition = mLayoutManager.findFirstVisibleItemPosition()
     }
 
     // add some listeners

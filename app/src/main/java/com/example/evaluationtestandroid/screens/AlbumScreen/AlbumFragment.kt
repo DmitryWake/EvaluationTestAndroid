@@ -24,6 +24,7 @@ class AlbumFragment(private val album: AlbumModel) : Fragment(R.layout.fragment_
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         APP_ACTIVITY.mToolbar.search_toolbar.visibility = View.GONE
+        APP_ACTIVITY.mToolbar.title = album.name
     }
 
     override fun onResume() {

@@ -21,7 +21,7 @@
         android:id="@+id/song_author"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:maxWidth="100dp"
+        android:maxWidth="110dp"
         android:layout_marginStart="20dp"
         android:layout_marginTop="@dimen/app_small_margin"
         android:layout_marginBottom="@dimen/app_small_margin"
@@ -51,7 +51,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/app_small_margin"
-        android:maxWidth="120dp"
+        android:maxWidth="110dp"
         android:text="Name"
         android:maxLines="3"
         android:textColor="@color/colorBlack"
@@ -70,7 +70,7 @@
         android:maxLines="1"
         android:textColor="@color/colorGreyDark"
         android:textSize="@dimen/song_text_size"
-        android:layout_margin="8dp"
+        android:layout_margin="@dimen/app_small_margin"
         app:layout_constraintBottom_toBottomOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
