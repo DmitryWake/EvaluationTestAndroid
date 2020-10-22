@@ -18,30 +18,32 @@ const val MEDIA_MUSIC = "music"
 const val ENTITY_ALBUM = "album"
 const val ENTITY_TRACK = "song"
 
-const val ATTRIBUTE_RATING = "ratingIndex"
-
 fun getAlbums(
-    searchRequest: String,
-    count: Int,
+    search: String,
     function: (dataList: MutableList<AlbumModel>) -> Unit
 ) {
-    val search = searchRequest.toLowerCase(Locale.ENGLISH).replace(' ', '+')
+    val searchRequest = search.toLowerCase(Locale.ENGLISH).replace(' ', '+')
     val dataList = mutableListOf<AlbumModel>()
-    val url = "${BASE_URL}term=${search}" +
+    //make url
+    val url = BASE_URL +
+            "term=$searchRequest" +
             "&media=${MEDIA_MUSIC}" +
             "&entity=${ENTITY_ALBUM}" +
-            "&attribute=${ATTRIBUTE_RATING}" +
-            "&limit=$count"
+            "&limit=200"
     val okHttpClient = OkHttpClient()
     val request = Request.Builder().url(url).build()
+    //call request
     okHttpClient.newCall(request).enqueue(object : Callback {
         override fun onFailure(call: Call, e: IOException) {
             Log.e("getAlbums", e.message.toString())
             return
         }
 
+        //get data
         override fun onResponse(call: Call, response: Response) {
             val json = response.body()?.string()
+            if (json.isNullOrEmpty())
+                return
             val results = JSONObject(json).getJSONArray("results")
             for (i in 0 until results.length()) {
                 val obj = results.getJSONObject(i)
@@ -56,6 +58,7 @@ fun getAlbums(
                     )
                 )
             }
+            // refer datalist to UI thread
             Handler(Looper.getMainLooper()).post {
                 kotlin.run {
                     function(dataList)
@@ -67,19 +70,23 @@ fun getAlbums(
 
 fun getSongs(album: AlbumModel, function: (dataList: MutableList<SongModel>) -> Unit) {
     val dataList = mutableListOf<SongModel>()
+    // make lookup url to find songs by album's id
     val url = "${BASE_LOOKUP_URL}id=${album.id}" +
             "&media=${MEDIA_MUSIC}" +
             "&entity=${ENTITY_TRACK}" +
-            "&attribute=${ATTRIBUTE_RATING}" +
             "&limit=${album.songsCount}"
     val okHttpClient = OkHttpClient()
     val request = Request.Builder().url(url).build()
     okHttpClient.newCall(request).enqueue(object : Callback {
         override fun onFailure(call: Call, e: IOException) {
+            Log.e("getSongs", e.message.toString())
+            return
         }
 
         override fun onResponse(call: Call, response: Response) {
             val json = response.body()?.string()
+            if (json.isNullOrEmpty())
+                return
             val results = JSONObject(json).getJSONArray("results")
             for (i in 0 until results.length()) {
                 val obj = results.getJSONObject(i)

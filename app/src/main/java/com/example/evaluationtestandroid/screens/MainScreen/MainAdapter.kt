@@ -7,6 +7,7 @@ import com.example.evaluationtestandroid.R
 import com.example.evaluationtestandroid.models.AlbumModel
 
 class MainAdapter(private var dataList: MutableList<AlbumModel>) : RecyclerView.Adapter<AlbumItemHolder>() {
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AlbumItemHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.album_item, parent, false)
@@ -14,11 +15,12 @@ class MainAdapter(private var dataList: MutableList<AlbumModel>) : RecyclerView.
     }
 
     override fun onBindViewHolder(holder: AlbumItemHolder, position: Int) {
-        holder.draw(dataList[position], position)
+        holder.draw(dataList[position])
     }
 
     override fun getItemCount(): Int = dataList.size
 
+    // update data in adapter
     fun changeData(newList: MutableList<AlbumModel>) {
         dataList = newList
         notifyDataSetChanged()

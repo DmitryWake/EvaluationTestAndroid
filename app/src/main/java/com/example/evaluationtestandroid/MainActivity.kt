@@ -20,7 +20,6 @@ class MainActivity : AppCompatActivity() {
         setContentView(mBinding.root)
         initFields()
         initFunctions()
-
     }
 
     private fun initFunctions() {

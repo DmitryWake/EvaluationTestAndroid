@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import com.example.evaluationtestandroid.R
 import com.squareup.picasso.Picasso
 
+// replace fragment in data_container with add to BackStack or not
 fun replaceFragment(fragment: Fragment, addToBackStack: Boolean = true) {
     if (addToBackStack) {
         APP_ACTIVITY.supportFragmentManager.beginTransaction()
@@ -23,8 +24,4 @@ fun replaceFragment(fragment: Fragment, addToBackStack: Boolean = true) {
 fun ImageView.downloadAndSetImage(url: String) {
     Picasso.get().load(url).fit()
         .placeholder(R.drawable.ic_base_image).into(this)
-}
-
-fun showToast(message: String) {
-    Toast.makeText(APP_ACTIVITY, message, Toast.LENGTH_SHORT).show()
 }

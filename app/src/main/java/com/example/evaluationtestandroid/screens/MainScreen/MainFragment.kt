@@ -22,18 +22,15 @@ class MainFragment : Fragment(R.layout.fragment_main) {
     private lateinit var mLayoutManager: LinearLayoutManager
     private lateinit var mAdapter: MainAdapter
 
-    var isScrolling: Boolean = false
-
     private var search: String = ""
 
     private lateinit var mSearchEditText: EditText
     private lateinit var mSearchEraseButton: ImageView
 
-    private var dataList = mutableListOf<AlbumModel>()
-    private var count: Int = 0
-
     companion object {
         var mRecyclerViewPosition: Int = 0
+
+        private var dataList = mutableListOf<AlbumModel>()
     }
 
     override fun onStart() {
@@ -41,7 +38,9 @@ class MainFragment : Fragment(R.layout.fragment_main) {
         initFields()
         initFunctions()
         initRecyclerView()
-        updateData(true)
+        mRecyclerView.scrollToPosition(mRecyclerViewPosition)
+        if (dataList.isEmpty())
+            updateData()
     }
 
     override fun onResume() {
@@ -50,27 +49,39 @@ class MainFragment : Fragment(R.layout.fragment_main) {
         APP_ACTIVITY.supportActionBar?.setDisplayHomeAsUpEnabled(false)
     }
 
+    override fun onPause() {
+        super.onPause()
+        mRecyclerViewPosition =  mLayoutManager.findFirstVisibleItemPosition()
+    }
+
+    // add some listeners
     private fun initFunctions() {
         mSearchEditText.addTextChangedListener(
             AppTextWatcher {
                 search = mSearchEditText.text.toString()
                 if (search.isNotEmpty()) {
                     mSearchEraseButton.visibility = View.VISIBLE
-                    count = 0
                     updateData()
+                } else {
+                    mSearchEraseButton.visibility = View.INVISIBLE
                 }
             })
         mSearchEraseButton.setOnClickListener {
             mSearchEditText.text = null
-            mSearchEraseButton.visibility = View.GONE
+            mSearchEraseButton.visibility = View.INVISIBLE
         }
     }
 
+    // initialization
     private fun initFields() {
         mLayoutManager = LinearLayoutManager(this.context)
         mSearchEditText = APP_ACTIVITY.mToolbar.search_toolbar.album_name_edit_text
         mSearchEraseButton = APP_ACTIVITY.mToolbar.search_toolbar.clear_icon
-        mSearchEraseButton.visibility = View.GONE
+        if (mSearchEditText.text.isEmpty()) {
+            mSearchEraseButton.visibility = View.INVISIBLE
+        } else {
+            mSearchEraseButton.visibility = View.VISIBLE
+        }
     }
 
     private fun initRecyclerView() {
@@ -81,32 +92,13 @@ class MainFragment : Fragment(R.layout.fragment_main) {
         mRecyclerView.isNestedScrollingEnabled = false
         mRecyclerView.layoutManager = mLayoutManager
         mRecyclerView.adapter = mAdapter
-
-        mRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-                super.onScrollStateChanged(recyclerView, newState)
-                if (newState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL)
-                    isScrolling = true
-            }
-
-            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                super.onScrolled(recyclerView, dx, dy)
-                if (isScrolling && dy > 0 && mLayoutManager.findFirstVisibleItemPosition() >= count - 12) {
-                    updateData()
-                }
-            }
-        })
     }
 
-    fun updateData(toPosition: Boolean = false) {
-        isScrolling = false
-        count += 20
-        getAlbums(search, count) {
-            dataList = it
-            mAdapter.changeData(it)
-            if (toPosition) {
-                mRecyclerView.smoothScrollToPosition(mRecyclerViewPosition + 2)
-            }
+    private fun updateData() {
+        getAlbums(search) { results ->
+            dataList = results
+            dataList.sortBy { it.name }
+            mAdapter.changeData(results)
         }
     }
 }

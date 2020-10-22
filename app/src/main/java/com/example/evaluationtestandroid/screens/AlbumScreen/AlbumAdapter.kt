@@ -7,6 +7,7 @@ import com.example.evaluationtestandroid.R
 import com.example.evaluationtestandroid.models.SongModel
 
 class AlbumAdapter(private var dataList: MutableList<SongModel>) : RecyclerView.Adapter<SongItemHolder>() {
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SongItemHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.song_item, parent, false)
